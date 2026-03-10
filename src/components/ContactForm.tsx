@@ -67,25 +67,39 @@ export default function ContactForm({ service, city, variant = 'default' }: Cont
 
   if (isSubmitted) {
     return (
-      <div className="text-center py-10 px-6 bg-white/50 backdrop-blur-xl border border-primary-100 rounded-[2.5rem] animate-fade-in shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary-100/30 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
-        <div className="w-20 h-20 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary-200">
-          <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="text-center py-16 px-8 bg-white/50 backdrop-blur-3xl border border-primary-200 rounded-[3rem] animate-fade-in shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-primary-100 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-100 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-50"></div>
+        
+        <div className="relative z-10">
+          <div className="w-24 h-24 bg-gradient-to-br from-primary-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_10px_40px_-10px_rgba(37,119,235,0.5)] scale-110">
+            <svg className="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          
+          <h3 className="text-3xl font-heading font-bold text-dark-950 mb-4 tracking-tight">Requirement Received!</h3>
+          <p className="text-lg text-dark-600 leading-relaxed mb-8 max-w-sm mx-auto">
+            Thank you, <span className="font-bold text-primary-600">{formData.name}</span>. Our AI has successfully analyzed your request and paired you with local technicians in <span className="font-bold text-dark-950">{formData.city || city}</span>.
+          </p>
+          
+          <div className="bg-dark-50 rounded-2xl p-5 border border-dark-100 mb-10 text-left">
+            <div className="flex items-center gap-3 mb-2 text-dark-700 font-bold text-sm">
+               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+               Next Step
+            </div>
+            <p className="text-sm text-dark-500 leading-relaxed">
+               A professional service coordinator will <span className="text-dark-950 font-bold decoration-primary-500 decoration-2 underline-offset-4 underline italic">message you directly</span> with a quote within 10-15 minutes.
+            </p>
+          </div>
+
+          <button
+            onClick={() => { setIsSubmitted(false); setFormData({ name: '', phone: '', email: '', service: service || '', city: city || '', message: '' }); }}
+            className="w-full py-4 bg-dark-950 text-white font-bold rounded-2xl hover:bg-dark-800 transition-all shadow-xl hover:shadow-2xl active:scale-[0.98]"
+          >
+            Submit Another Request
+          </button>
         </div>
-        <h3 className="text-2xl font-heading font-bold text-dark-950 mb-3">AI Verification Complete!</h3>
-        <p className="text-dark-600 leading-relaxed mb-6">
-          Thank you, <span className="font-bold text-primary-600">{formData.name}</span>. Your request has been analyzed and sent to our local experts in <span className="font-bold text-dark-950">{formData.city || city}</span>. 
-          <br /><br />
-          Our representative will <span className="font-bold underline decoration-primary-500 underline-offset-4 text-dark-950">message you directly</span> shortly via phone or email.
-        </p>
-        <button
-          onClick={() => { setIsSubmitted(false); setFormData({ name: '', phone: '', email: '', service: service || '', city: city || '', message: '' }); }}
-          className="px-6 py-2.5 bg-dark-950 text-white font-bold rounded-xl hover:bg-dark-800 transition-all text-sm"
-        >
-          Submit New Request
-        </button>
       </div>
     );
   }

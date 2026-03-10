@@ -22,8 +22,16 @@ export async function POST(req: Request) {
       .select();
 
     if (error) {
-      console.error('Supabase error:', error);
-      return NextResponse.json({ error: 'Failed to save lead' }, { status: 500 });
+      console.error('Supabase save error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
+      return NextResponse.json({ 
+        error: 'Failed to save lead', 
+        details: error.message 
+      }, { status: 500 });
     }
 
     // 2. Email Notification (Placeholder)
