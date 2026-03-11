@@ -273,25 +273,6 @@ export default function ServiceCityPage({ params }: PageProps) {
                 <FAQSection faqs={faqs} title={`Common Questions About ${service.name} in ${city.name}`} />
               </div>
 
-              {/* Dynamic FAQ Schema for Google Snippets */}
-              <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                  __html: JSON.stringify({
-                    '@context': 'https://schema.org',
-                    '@type': 'FAQPage',
-                    mainEntity: faqs.map(faq => ({
-                      '@type': 'Question',
-                      name: faq.question,
-                      acceptedAnswer: {
-                        '@type': 'Answer',
-                        text: faq.answer
-                      }
-                    }))
-                  })
-                }}
-              />
-
               {/* Relational SEO - Cross-City Authority */}
               <div className="mt-20 py-12 border-t border-dark-100">
                 <h2 className="text-2xl font-heading font-bold text-dark-950 mb-8">
