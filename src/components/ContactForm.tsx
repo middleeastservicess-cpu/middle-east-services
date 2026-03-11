@@ -7,9 +7,10 @@ interface ContactFormProps {
   service?: string;
   city?: string;
   variant?: 'default' | 'compact';
+  isDark?: boolean;
 }
 
-export default function ContactForm({ service, city, variant = 'default' }: ContactFormProps) {
+export default function ContactForm({ service, city, variant = 'default', isDark = false }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -57,6 +58,19 @@ export default function ContactForm({ service, city, variant = 'default' }: Cont
       if (!response.ok) throw new Error(result.error || 'Failed to submit');
       
       setIsSubmitted(true);
+
+      // Redirect to WhatsApp with the form data
+      const message = `*Requirement Received*
+👤 *Customer*: ${formData.name}
+📞 *Contact*: ${formData.phone}
+🔧 *Service Requested*: ${formData.service || service}
+📍 *Location*: ${formData.city || city}
+💬 *Details*: ${formData.message || 'I would like to discuss this on WhatsApp'}`;
+
+      const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(message)}`;
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+      }, 1500); // Small delay to let the user see the "Received" state
     } catch (err) {
       console.error('Submission error:', err);
       setAiStatus('❌ Submission failed. Please try again.');
@@ -115,25 +129,33 @@ export default function ContactForm({ service, city, variant = 'default' }: Cont
       <form onSubmit={handleSubmit} className="space-y-4 p-1 bg-transparent rounded-[2rem]" id="ai-quote-request-form">
         <div className={variant === 'compact' ? 'space-y-3' : 'grid grid-cols-1 sm:grid-cols-2 gap-4'}>
           <div>
-            <label htmlFor="contact-name" className="block text-xs font-bold text-dark-400 uppercase tracking-widest mb-1.5 ml-1">Full Name *</label>
+            <label htmlFor="contact-name" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Full Name *</label>
             <input
               type="text"
               id="contact-name"
               required
-              className="w-full bg-white/80 border border-dark-100 rounded-2xl px-5 py-3.5 text-dark-950 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-primary-200 placeholder:text-dark-300 shadow-sm"
+              className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
+                isDark 
+                  ? 'bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:bg-white/20 focus:ring-white/30' 
+                  : 'bg-white border-dark-100 text-dark-950 placeholder:text-dark-400 focus:ring-primary-500 hover:border-primary-200'
+              }`}
               placeholder="Your name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
           <div>
-            <label htmlFor="contact-phone" className="block text-xs font-bold text-dark-400 uppercase tracking-widest mb-1.5 ml-1">Phone Number *</label>
+            <label htmlFor="contact-phone" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Phone Number *</label>
             <input
               type="tel"
               id="contact-phone"
               required
-              className="w-full bg-white/80 border border-dark-100 rounded-2xl px-5 py-3.5 text-dark-950 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-primary-200 placeholder:text-dark-300 shadow-sm"
-              placeholder="+971 50 123 4567"
+              className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
+                isDark 
+                  ? 'bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:bg-white/20 focus:ring-white/30' 
+                  : 'bg-white border-dark-100 text-dark-950 placeholder:text-dark-400 focus:ring-primary-500 hover:border-primary-200'
+              }`}
+              placeholder="+966 50 123 4567"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             />
@@ -141,71 +163,102 @@ export default function ContactForm({ service, city, variant = 'default' }: Cont
         </div>
         
         <div>
-          <label htmlFor="contact-email" className="block text-xs font-bold text-dark-400 uppercase tracking-widest mb-1.5 ml-1">Email</label>
+          <label htmlFor="contact-email" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Email</label>
           <input
             type="email"
             id="contact-email"
-            className="w-full bg-white/80 border border-dark-100 rounded-2xl px-5 py-3.5 text-dark-950 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-primary-200 placeholder:text-dark-300 shadow-sm"
+            className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
+              isDark 
+                ? 'bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:bg-white/20 focus:ring-white/30' 
+                : 'bg-white border-dark-100 text-dark-950 placeholder:text-dark-400 focus:ring-primary-500 hover:border-primary-200'
+            }`}
             placeholder="your@email.com"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           />
         </div>
 
+        {/* WhatsApp Alternative */}
+        <a
+          href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(`Hi, I'm interested in ${formData.service || service || 'services'} in ${formData.city || city || 'my city'}.`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`w-full py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-3 border-2 
+            ${isDark 
+              ? 'border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10' 
+              : 'border-emerald-100 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200'}
+          `}
+        >
+          <svg className="w-5 h-5 font-bold" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Quick Chat on WhatsApp
+        </a>
+
         {!service && (
           <div>
-            <label htmlFor="contact-service" className="block text-xs font-bold text-dark-400 uppercase tracking-widest mb-1.5 ml-1">Service Needed *</label>
+            <label htmlFor="contact-service" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Service Needed *</label>
             <select
               id="contact-service"
               required
-              className="w-full bg-white/80 border border-dark-100 rounded-2xl px-5 py-3.5 text-dark-950 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-primary-200 shadow-sm"
+              className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
+                isDark 
+                  ? 'bg-white/10 border-white/20 text-white focus:bg-white/20 focus:ring-white/30' 
+                  : 'bg-white border-dark-100 text-dark-950 focus:ring-primary-500 hover:border-primary-200'
+              }`}
               value={formData.service}
               onChange={(e) => setFormData({ ...formData, service: e.target.value })}
             >
-              <option value="">Select a service</option>
-              <option value="AC Repair">AC Repair</option>
-              <option value="Plumbing">Plumbing</option>
-              <option value="Electrician">Electrician</option>
-              <option value="Pest Control">Pest Control</option>
-              <option value="Deep Cleaning">Deep Cleaning</option>
-              <option value="Sofa Cleaning">Sofa Cleaning</option>
-              <option value="Water Tank Cleaning">Water Tank Cleaning</option>
-              <option value="Handyman">Handyman</option>
-              <option value="Movers & Packers">Movers & Packers</option>
-              <option value="Car Towing">Car Towing</option>
+              <option value="" className="text-dark-950">Select a service</option>
+              <option value="AC Repair" className="text-dark-950">AC Repair</option>
+              <option value="Plumbing" className="text-dark-950">Plumbing</option>
+              <option value="Electrician" className="text-dark-950">Electrician</option>
+              <option value="Pest Control" className="text-dark-950">Pest Control</option>
+              <option value="Deep Cleaning" className="text-dark-950">Deep Cleaning</option>
+              <option value="Sofa Cleaning" className="text-dark-950">Sofa Cleaning</option>
+              <option value="Water Tank Cleaning" className="text-dark-950">Water Tank Cleaning</option>
+              <option value="Handyman" className="text-dark-950">Handyman</option>
+              <option value="Movers & Packers" className="text-dark-950">Movers & Packers</option>
+              <option value="Car Towing" className="text-dark-950">Car Towing</option>
             </select>
           </div>
         )}
 
         {!city && (
           <div>
-            <label htmlFor="contact-city" className="block text-xs font-bold text-dark-400 uppercase tracking-widest mb-1.5 ml-1">City *</label>
+            <label htmlFor="contact-city" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>City *</label>
             <select
               id="contact-city"
               required
-              className="w-full bg-white/80 border border-dark-100 rounded-2xl px-5 py-3.5 text-dark-950 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-primary-200 shadow-sm"
+              className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
+                isDark 
+                  ? 'bg-white/10 border-white/20 text-white focus:bg-white/20 focus:ring-white/30' 
+                  : 'bg-white border-dark-100 text-dark-950 focus:ring-primary-500 hover:border-primary-200'
+              }`}
               value={formData.city}
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             >
-              <option value="">Select a city</option>
-              <option value="Dubai">Dubai</option>
-              <option value="Abu Dhabi">Abu Dhabi</option>
-              <option value="Riyadh">Riyadh</option>
-              <option value="Jeddah">Jeddah</option>
-              <option value="Doha">Doha</option>
-              <option value="Kuwait City">Kuwait City</option>
-              <option value="Manama">Manama</option>
-              <option value="Muscat">Muscat</option>
+              <option value="" className="text-dark-950">Select a city</option>
+              <option value="Dubai" className="text-dark-950">Dubai</option>
+              <option value="Abu Dhabi" className="text-dark-950">Abu Dhabi</option>
+              <option value="Riyadh" className="text-dark-950">Riyadh</option>
+              <option value="Jeddah" className="text-dark-950">Jeddah</option>
+              <option value="Doha" className="text-dark-950">Doha</option>
+              <option value="Kuwait City" className="text-dark-950">Kuwait City</option>
+              <option value="Manama" className="text-dark-950">Manama</option>
+              <option value="Muscat" className="text-dark-950">Muscat</option>
             </select>
           </div>
         )}
 
         <div>
-          <label htmlFor="contact-message" className="block text-xs font-bold text-dark-400 uppercase tracking-widest mb-1.5 ml-1">Describe Your Needs</label>
+          <label htmlFor="contact-message" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Describe Your Needs</label>
           <textarea
             id="contact-message"
             rows={3}
-            className="w-full bg-white/80 border border-dark-100 rounded-2xl px-5 py-4 text-dark-950 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all hover:border-primary-200 placeholder:text-dark-300 shadow-sm resize-none"
+            className={`w-full border rounded-2xl px-5 py-4 outline-none transition-all shadow-sm resize-none ${
+              isDark 
+                ? 'bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:bg-white/20 focus:ring-white/30' 
+                : 'bg-white border-dark-100 text-dark-950 placeholder:text-dark-400 focus:ring-primary-500 hover:border-primary-200'
+            }`}
             placeholder="Tell us about your requirements..."
             value={formData.message}
             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -215,7 +268,7 @@ export default function ContactForm({ service, city, variant = 'default' }: Cont
         <button
           type="submit"
           disabled={isSubmitting}
-          className="relative group w-full bg-primary-600 text-white font-bold py-4 rounded-2xl shadow-xl hover:bg-primary-700 transition-all disabled:opacity-50 disabled:cursor-wait overflow-hidden"
+          className="relative group w-full bg-primary-600 text-white font-bold py-4 rounded-2xl shadow-xl hover:bg-primary-700 transition-all disabled:opacity-50 disabled:cursor-wait overflow-hidden mb-4"
           id="submit-ai-quote-button"
         >
           <div className="relative z-10 flex items-center justify-center gap-3">
@@ -229,7 +282,7 @@ export default function ContactForm({ service, city, variant = 'default' }: Cont
               </>
             ) : (
               <>
-                <span className="text-lg">Submit Request</span>
+                <span className="text-lg">Submit Requirement</span>
                 <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -239,8 +292,41 @@ export default function ContactForm({ service, city, variant = 'default' }: Cont
           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
         </button>
 
-        <p className="text-[10px] text-dark-400 text-center uppercase tracking-widest font-bold">
-          🛡️ AI analysis ensures your request is handled by the right human expert.
+        {/* WhatsApp Alternative */}
+        <a
+          href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(`Hi, I'm interested in ${formData.service || service || 'services'} in ${formData.city || city || 'my city'}.`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`w-full py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center gap-3 border-2 mb-6
+            ${isDark 
+              ? 'border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10' 
+              : 'border-emerald-100 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200'}
+          `}
+        >
+          <svg className="w-5 h-5 font-bold" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Quick Chat on WhatsApp
+        </a>
+
+        {/* Trust Badges */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+           <div className={`flex items-center gap-2 p-3 rounded-xl border ${isDark ? 'bg-white/5 border-white/10' : 'bg-dark-50 border-dark-100'}`}>
+              <span className="text-lg">⚡</span>
+              <div>
+                 <p className={`text-[9px] font-black uppercase tracking-wider ${isDark ? 'text-white' : 'text-dark-900'}`}>Fast Response</p>
+                 <p className={`text-[8px] font-medium ${isDark ? 'text-white/50' : 'text-dark-500'}`}>Under 15 Mins</p>
+              </div>
+           </div>
+           <div className={`flex items-center gap-2 p-3 rounded-xl border ${isDark ? 'bg-white/5 border-white/10' : 'bg-dark-50 border-dark-100'}`}>
+              <span className="text-lg">🛡️</span>
+              <div>
+                 <p className={`text-[9px] font-black uppercase tracking-wider ${isDark ? 'text-white' : 'text-dark-900'}`}>Verified Pro</p>
+                 <p className={`text-[8px] font-medium ${isDark ? 'text-white/50' : 'text-dark-500'}`}>100% Background Checked</p>
+              </div>
+           </div>
+        </div>
+
+        <p className={`text-[11px] text-center uppercase tracking-widest font-black ${isDark ? 'text-white/40' : 'text-dark-400'}`}>
+          AI analysis simplifies your booking process.
         </p>
       </form>
     </div>

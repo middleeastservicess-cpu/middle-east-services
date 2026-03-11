@@ -5,7 +5,7 @@ import ContactForm from '@/components/ContactForm';
 import FAQSection from '@/components/FAQSection';
 
 export const metadata: Metadata = {
-  title: 'Middle East Services — Professional Home Services Across the Middle East',
+  title: 'Professional Home Services Across the Middle East',
   description: 'Book trusted professionals for AC repair, plumbing, cleaning, pest control, movers & more across Dubai, Riyadh, Doha, Abu Dhabi, Jeddah, Kuwait City, Manama & Muscat.',
   alternates: {
     canonical: `${SITE_CONFIG.url}/`,
@@ -102,7 +102,7 @@ export default function HomePage() {
               <div className="relative bg-white/15 backdrop-blur-xl border border-white/20 p-8 sm:p-10 rounded-[2.5rem] shadow-2xl">
                 <h2 className="text-2xl font-heading font-bold text-white mb-2">Request Service</h2>
                 <p className="text-white/60 text-sm mb-8">Tell us what you need and our AI will connect you with an expert.</p>
-                <ContactForm variant="compact" />
+                <ContactForm variant="compact" isDark={true} />
               </div>
             </div>
           </div>

@@ -2,8 +2,11 @@ import { SITE_CONFIG, cities, services } from '@/data';
 import Image from 'next/image';
 
 export const metadata = {
-  title: `About Us — ${SITE_CONFIG.name} | Regional Professional Services`,
+  title: `About Us — Regional Professional Services`,
   description: `Learn how ${SITE_CONFIG.name} provides expert home and professional services across UAE, Saudi Arabia, Qatar, Kuwait, Bahrain, and Oman.`,
+  alternates: {
+    canonical: `${SITE_CONFIG.url}/about/`,
+  },
 };
 
 export default function AboutUs() {

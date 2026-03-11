@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const city = getCityBySlug(parsed.citySlug);
   if (!service || !city) return {};
 
-  const title = `${service.name} in ${city.name} — Professional ${service.name} Service | ${SITE_CONFIG.name}`;
+  const title = `${service.name} in ${city.name} — Professional ${service.name} Service`;
   const description = `Looking for trusted ${service.name.toLowerCase()} in ${city.name}? Our local experts provide high-quality ${service.name.toLowerCase()} services throughout ${city.country}. Same-day assistance available in ${city.name}. Book your service now.`;
 
   return {
@@ -144,9 +144,9 @@ export default function ServiceCityPage({ params }: PageProps) {
           <div className="lg:col-span-2">
             <article className="prose prose-lg max-w-none">
               {/* H1 Primary Keyword */}
-              <h1 className="text-4xl sm:text-5xl font-heading font-bold text-dark-950 mb-8 leading-tight">
+              <h2 className="text-4xl sm:text-5xl font-heading font-bold text-dark-950 mb-8 leading-tight">
                 {service.name} in {city.name}
-              </h1>
+              </h2>
 
               {/* Introduction */}
               <div className="mb-12">
@@ -298,15 +298,22 @@ export default function ServiceCityPage({ params }: PageProps) {
                   Professional {service.name} in Other Major Cities
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
-                  {cities.filter(c => c.slug !== city.slug).sort(() => 0.5 - Math.random()).slice(0, 10).map(otherCity => (
-                    <Link 
-                      key={otherCity.slug} 
-                      href={`/${service.slug}-${otherCity.slug}/`}
-                      className="text-sm text-dark-600 hover:text-primary-600 transition-colors bg-dark-50 p-4 rounded-xl text-center font-bold border border-transparent hover:border-primary-100 shadow-sm"
-                    >
-                      {service.name} in {otherCity.name}
-                    </Link>
-                  ))}
+                  {(() => {
+                    const cityIndex = cities.findIndex(c => c.slug === city.slug);
+                    const list = [];
+                    for(let i = 1; i <= 10; i++) {
+                      list.push(cities[(cityIndex + i) % cities.length]);
+                    }
+                    return list.map(otherCity => (
+                      <Link 
+                        key={otherCity.slug} 
+                        href={`/${service.slug}-${otherCity.slug}/`}
+                        className="text-sm text-dark-600 hover:text-primary-600 transition-colors bg-dark-50 p-4 rounded-xl text-center font-bold border border-transparent hover:border-primary-100 shadow-sm"
+                      >
+                        {service.name} in {otherCity.name}
+                      </Link>
+                    ));
+                  })()}
                 </div>
               </div>
 

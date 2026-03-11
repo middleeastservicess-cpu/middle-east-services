@@ -2,8 +2,11 @@ import { SITE_CONFIG } from '@/data';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata = {
-  title: `Privacy Policy — ${SITE_CONFIG.name}`,
+  title: `Privacy Policy`,
   description: `Read about how ${SITE_CONFIG.name} collects, protects, and uses your personal information.`,
+  alternates: {
+    canonical: `${SITE_CONFIG.url}/privacy-policy/`,
+  },
 };
 
 export default function PrivacyPolicy() {

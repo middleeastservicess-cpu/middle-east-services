@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {};
 
   return {
-    title: `${post.title} | ${SITE_CONFIG.name}`,
+    title: post.title,
     description: post.excerpt,
     alternates: {
       canonical: `${SITE_CONFIG.url}/blog/${params.slug}/`,

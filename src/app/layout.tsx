@@ -3,9 +3,6 @@ import type { Metadata } from 'next';
 import { Inter, Outfit } from 'next/font/google';
 import './globals.css';
 import { SITE_CONFIG } from '@/data';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -67,9 +64,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: {
-    canonical: SITE_CONFIG.url,
-  },
   verification: {
     google: 'your-google-verification-code',
   },
@@ -88,10 +82,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#1d62d8" />
       </head>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased text-dark-900`}>
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <GoogleAnalytics />
+        {children}
       </body>
     </html>
   );

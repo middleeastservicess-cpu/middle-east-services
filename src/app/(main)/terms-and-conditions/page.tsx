@@ -1,8 +1,11 @@
 import { SITE_CONFIG } from '@/data';
 
 export const metadata = {
-  title: `Terms & Conditions — ${SITE_CONFIG.name}`,
+  title: `Terms & Conditions`,
   description: `Read the terms of service and user agreement for ${SITE_CONFIG.name}.`,
+  alternates: {
+    canonical: `${SITE_CONFIG.url}/terms-and-conditions/`,
+  },
 };
 
 export default function TermsAndConditions() {

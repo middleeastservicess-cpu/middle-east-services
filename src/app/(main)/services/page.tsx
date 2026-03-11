@@ -4,7 +4,7 @@ import { services, cities, SITE_CONFIG } from '@/data';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata: Metadata = {
-  title: `All Services — Professional Home & Business Services | ${SITE_CONFIG.name}`,
+  title: `All Services — Professional Home & Business Services`,
   description: 'Browse our complete range of professional services: AC repair, plumbing, electrician, pest control, deep cleaning, sofa cleaning, water tank cleaning, handyman, movers, and car towing across the Middle East.',
   alternates: {
     canonical: `${SITE_CONFIG.url}/services/`,
@@ -54,7 +54,7 @@ export default function ServicesPage() {
                   </div>
                   <div className="flex items-center justify-end pt-4 border-t border-dark-100">
                     <Link href={`/services/${service.slug}/`} className="text-primary-600 font-semibold text-sm hover:text-primary-700 transition-colors flex items-center gap-1">
-                      View Details
+                      View {service.name} Details
                       <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -67,48 +67,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Service + City Matrix */}
-      <section className="section-padding bg-dark-50">
-        <div className="container-custom">
-          <div className="text-center mb-10">
-            <h2 className="section-title text-2xl sm:text-3xl">Find Services by City</h2>
-            <p className="section-subtitle mx-auto mt-3">Click on any combination to book a service in your city</p>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[700px] bg-white rounded-2xl overflow-hidden shadow-sm border border-dark-100">
-              <thead>
-                <tr className="bg-primary-600 text-white">
-                  <th className="px-4 py-3 text-left font-heading font-semibold text-sm">Service</th>
-                  {cities.map((city) => (
-                    <th key={city.slug} className="px-3 py-3 text-center font-heading font-semibold text-sm">
-                      {city.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {services.map((service, index) => (
-                  <tr key={service.slug} className={index % 2 === 0 ? 'bg-white' : 'bg-dark-50'}>
-                    <td className="px-4 py-3 font-medium text-dark-900 text-sm">
-                      {service.icon} {service.name}
-                    </td>
-                    {cities.map((city) => (
-                      <td key={city.slug} className="px-3 py-3 text-center">
-                        <Link
-                          href={`/${service.slug}-${city.slug}/`}
-                          className="text-primary-600 hover:text-primary-700 font-medium text-xs hover:underline"
-                        >
-                          Book →
-                        </Link>
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+
     </>
   );
 }

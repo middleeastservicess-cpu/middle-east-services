@@ -60,6 +60,8 @@ export const SITE_CONFIG = {
   domain: 'middleeastservices.com',
   url: 'https://middleeastservices.com',
   email: 'info@middleeastservices.com',
+  phone: '+966 56 948 7569',
+  whatsapp: '966569487569',
   description: 'Your trusted marketplace for professional home & business services across the Middle East. Book AC repair, plumbing, cleaning, pest control & more.',
   socialMedia: {
     facebook: 'https://facebook.com/middleeastservices',

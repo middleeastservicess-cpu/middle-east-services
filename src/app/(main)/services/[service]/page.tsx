@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!service) return {};
 
   return {
-    title: `${service.name} — Professional ${service.name} Service Across the Middle East | ${SITE_CONFIG.name}`,
+    title: `${service.name} — Professional ${service.name} Service Across the Middle East`,
     description: `${service.shortDescription} Available in Dubai, Abu Dhabi, Riyadh, Jeddah, Doha, Kuwait City, Manama & Muscat. Book now!`,
     alternates: {
       canonical: `${SITE_CONFIG.url}/services/${params.service}/`,

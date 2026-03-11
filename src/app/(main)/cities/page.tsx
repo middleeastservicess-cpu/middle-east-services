@@ -4,7 +4,7 @@ import { cities, SITE_CONFIG } from '@/data';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata: Metadata = {
-  title: `Cities We Serve — Professional Services Across the Middle East | ${SITE_CONFIG.name}`,
+  title: `Cities We Serve — Professional Services Across the Middle East`,
   description: 'We provide professional home services in Dubai, Abu Dhabi, Riyadh, Jeddah, Doha, Kuwait City, Manama & Muscat. Find trusted professionals in your city.',
   alternates: {
     canonical: `${SITE_CONFIG.url}/cities/`,
@@ -54,7 +54,7 @@ export default function CitiesPage() {
                       <span>🕐 {city.timezone}</span>
                     </div>
                     <span className="text-primary-600 font-semibold text-sm group-hover:translate-x-1 transition-transform">
-                      View Services →
+                      {city.name} Services →
                     </span>
                   </div>
                 </div>

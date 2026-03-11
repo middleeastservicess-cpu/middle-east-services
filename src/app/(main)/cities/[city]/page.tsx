@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!city) return {};
 
   return {
-    title: `Services in ${city.name} — Professional Home Services in ${city.name}, ${city.country} | ${SITE_CONFIG.name}`,
+    title: `Services in ${city.name} — Professional Home Services in ${city.name}, ${city.country}`,
     description: `Book trusted professionals in ${city.name} for AC repair, plumbing, cleaning, pest control & more. Same-day service and verified experts across ${city.name}.`,
     alternates: {
       canonical: `${SITE_CONFIG.url}/cities/${params.city}/`,

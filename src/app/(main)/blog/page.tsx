@@ -4,7 +4,7 @@ import { blogPosts, SITE_CONFIG } from '@/data';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata: Metadata = {
-  title: `Blog — Home Service Tips & Guides | ${SITE_CONFIG.name}`,
+  title: `Blog — Home Service Tips & Guides`,
   description: 'Expert tips, guides, and advice on home maintenance, AC repair, pest control, cleaning, and more. Stay informed with Middle East Services blog.',
   alternates: {
     canonical: `${SITE_CONFIG.url}/blog/`,
@@ -62,7 +62,7 @@ export default function BlogPage() {
                     href={`/blog/${post.slug}/`}
                     className="text-primary-600 font-semibold text-sm hover:text-primary-700 flex items-center gap-1"
                   >
-                    Read More
+                    Read: {post.title}
                     <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
