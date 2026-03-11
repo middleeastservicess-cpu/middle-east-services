@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useId } from 'react';
 import { SITE_CONFIG } from '@/data';
 
 interface ContactFormProps {
@@ -11,6 +11,7 @@ interface ContactFormProps {
 }
 
 export default function ContactForm({ service, city, variant = 'default', isDark = false }: ContactFormProps) {
+  const idSuffix = useId();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -126,13 +127,13 @@ export default function ContactForm({ service, city, variant = 'default', isDark
         AI-Powered Form
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 p-1 bg-transparent rounded-[2rem]" id="ai-quote-request-form">
+      <form onSubmit={handleSubmit} className="space-y-4 p-1 bg-transparent rounded-[2rem]" id={`ai-quote-request-form-${idSuffix}`}>
         <div className={variant === 'compact' ? 'space-y-3' : 'grid grid-cols-1 sm:grid-cols-2 gap-4'}>
           <div>
-            <label htmlFor="contact-name" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Full Name *</label>
+            <label htmlFor={`contact-name-${idSuffix}`} className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Full Name *</label>
             <input
               type="text"
-              id="contact-name"
+              id={`contact-name-${idSuffix}`}
               required
               className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
                 isDark 
@@ -145,10 +146,10 @@ export default function ContactForm({ service, city, variant = 'default', isDark
             />
           </div>
           <div>
-            <label htmlFor="contact-phone" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Phone Number *</label>
+            <label htmlFor={`contact-phone-${idSuffix}`} className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Phone Number *</label>
             <input
               type="tel"
-              id="contact-phone"
+              id={`contact-phone-${idSuffix}`}
               required
               className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
                 isDark 
@@ -163,10 +164,10 @@ export default function ContactForm({ service, city, variant = 'default', isDark
         </div>
         
         <div>
-          <label htmlFor="contact-email" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Email</label>
+          <label htmlFor={`contact-email-${idSuffix}`} className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Email</label>
           <input
             type="email"
-            id="contact-email"
+            id={`contact-email-${idSuffix}`}
             className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
               isDark 
                 ? 'bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:bg-white/20 focus:ring-white/30' 
@@ -195,9 +196,9 @@ export default function ContactForm({ service, city, variant = 'default', isDark
 
         {!service && (
           <div>
-            <label htmlFor="contact-service" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Service Needed *</label>
+            <label htmlFor={`contact-service-${idSuffix}`} className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Service Needed *</label>
             <select
-              id="contact-service"
+              id={`contact-service-${idSuffix}`}
               required
               className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
                 isDark 
@@ -224,9 +225,9 @@ export default function ContactForm({ service, city, variant = 'default', isDark
 
         {!city && (
           <div>
-            <label htmlFor="contact-city" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>City *</label>
+            <label htmlFor={`contact-city-${idSuffix}`} className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>City *</label>
             <select
-              id="contact-city"
+              id={`contact-city-${idSuffix}`}
               required
               className={`w-full border rounded-2xl px-5 py-3.5 outline-none transition-all shadow-sm ${
                 isDark 
@@ -250,9 +251,9 @@ export default function ContactForm({ service, city, variant = 'default', isDark
         )}
 
         <div>
-          <label htmlFor="contact-message" className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Describe Your Needs</label>
+          <label htmlFor={`contact-message-${idSuffix}`} className={`block text-xs font-bold uppercase tracking-widest mb-1.5 ml-1 ${isDark ? 'text-white/80' : 'text-dark-700'}`}>Describe Your Needs</label>
           <textarea
-            id="contact-message"
+            id={`contact-message-${idSuffix}`}
             rows={3}
             className={`w-full border rounded-2xl px-5 py-4 outline-none transition-all shadow-sm resize-none ${
               isDark 
@@ -269,7 +270,7 @@ export default function ContactForm({ service, city, variant = 'default', isDark
           type="submit"
           disabled={isSubmitting}
           className="relative group w-full bg-primary-600 text-white font-bold py-4 rounded-2xl shadow-xl hover:bg-primary-700 transition-all disabled:opacity-50 disabled:cursor-wait overflow-hidden mb-4"
-          id="submit-ai-quote-button"
+          id={`submit-ai-quote-button-${idSuffix}`}
         >
           <div className="relative z-10 flex items-center justify-center gap-3">
             {isSubmitting ? (

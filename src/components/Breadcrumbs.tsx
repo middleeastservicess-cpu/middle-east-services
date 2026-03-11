@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SITE_CONFIG } from '@/data';
 
 interface BreadcrumbItem {
   label: string;
@@ -17,7 +18,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.label,
-      item: item.href ? `https://middleeastservices.com${item.href}` : undefined,
+      item: item.href ? `${SITE_CONFIG.url}${item.href}` : undefined,
     })),
   };
 
